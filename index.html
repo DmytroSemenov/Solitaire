@@ -5,13 +5,34 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<title>Solitaire</title>
-	<link rel="stylesheet" type="text/css" href="style.css">
-	<script src="main.js" defer></script>
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+	<script src="js/placeholders.js" defer></script>
+	<script src="js/deck.js" defer></script>
+	<script src="js/cards.js" defer></script>
+	<script src="js/main.js" defer></script>
 </head>
 
 <body>
-	<div id="wrapper">
-
+	<div id="game" class="game">
+		<div class="deck__main">
+			<div id="stack_base"   class="card__placeholder"></div>
+			<div id="stack_base_r" class="card__placeholder"></div>
+		</div>
+		<div class="deck__final">
+			<div id="deck__final__1" class="card__placeholder"></div>
+			<div id="deck__final__2" class="card__placeholder"></div>
+			<div id="deck__final__3" class="card__placeholder"></div>
+			<div id="deck__final__4" class="card__placeholder"></div>
+		</div>
+		<div class="decks__workflow">
+			<div id="deck_1" class="card__placeholder"></div>
+			<div id="deck_2" class="card__placeholder"></div>
+			<div id="deck_3" class="card__placeholder"></div>
+			<div id="deck_4" class="card__placeholder"></div>
+			<div id="deck_5" class="card__placeholder"></div>
+			<div id="deck_6" class="card__placeholder"></div>
+			<div id="deck_7" class="card__placeholder"></div>
+		</div>
 	</div>
 </body>
 

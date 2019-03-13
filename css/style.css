@@ -1,0 +1,66 @@
+html,body {
+	width: 100%;
+	padding-bottom: 30px;
+}
+.game {
+	border: 1px solid #000;
+	width: 1000px;
+	margin: 0 auto;
+	padding: 10px;
+	min-height: 800px;
+	background: #1b4c25;
+}
+.card {
+    /* position: fixed; */
+	width: 100px;
+	height: 150px;
+	background: #ddd;
+	font-size: 20px;
+	line-height: 25px;
+	display: flex;
+	border-radius: 5px;
+	position: relative;
+	/* color: transparent; */
+	padding: 5px;
+	/* box-sizing: border-box; */
+	border: 2px solid #cac6c6;
+	float: left;
+	/* grid-column: 1; */
+    /* margin-top: -160px; */
+    margin: -6px 0 0 -6px;
+}
+.card__placeholder {
+    margin: 10px;
+	width: 100px;
+	height: 150px;
+	/* background: #ddd; */
+	font-size: 20px;
+	line-height: 25px;
+	/* display: flex; */
+	border-radius: 5px;
+	position: relative;
+	color: transparent;
+	padding: 5px;
+	/* box-sizing: border-box; */
+	border: 2px solid #cac6c6;
+	float: left;
+	/* grid-column: 1; */
+	/* margin-top: -160px; */
+}
+.card__red {
+    color: red;
+}
+.card__black {
+    color: black;
+}
+.deck__main {
+    float: left;
+}
+.deck__final {
+    float: right;
+}
+.decks__workflow {
+    display: flex;
+    justify-content: space-between;
+    margin: 200px auto;
+}
