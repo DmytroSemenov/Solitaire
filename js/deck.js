@@ -14,9 +14,9 @@ class Deck {
         }
         let i = baseDeck.length - 1;
         while (i >= 0) {
-            let index = Math.round (Math.random()*i);
-            this._deck.push(baseDeck.splice(index, 1)[0]);    
-        i--;    
-        }                
+            let index = Math.round(Math.random() * i);
+            this._deck.push(baseDeck.splice(index, 1)[0]);
+            i--;
+        }
     }
 }

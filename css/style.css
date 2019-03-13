@@ -11,7 +11,6 @@ html,body {
 	background: #1b4c25;
 }
 .card {
-    /* position: fixed; */
 	width: 100px;
 	height: 150px;
 	background: #ddd;
@@ -19,15 +18,25 @@ html,body {
 	line-height: 25px;
 	display: flex;
 	border-radius: 5px;
-	position: relative;
-	/* color: transparent; */
+	position: absolute;
 	padding: 5px;
-	/* box-sizing: border-box; */
 	border: 2px solid #cac6c6;
-	float: left;
-	/* grid-column: 1; */
-    /* margin-top: -160px; */
-    margin: -6px 0 0 -6px;
+	margin: -6px 0 0 -6px;
+	cursor: pointer;
+}
+.card__back {
+    width: 100px;
+	height: 150px;
+	background: greenyellow;
+	font-size: 20px;
+	line-height: 25px;
+	display: flex;
+	border-radius: 5px;
+	position: absolute;
+	padding: 5px;
+	border: 2px solid #cac6c6;
+	margin: -6px 0 0 -6px;
+	cursor: pointer;
 }
 .card__placeholder {
     margin: 10px;

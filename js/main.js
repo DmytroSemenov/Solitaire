@@ -13,9 +13,9 @@ class Game {
     constructor() {
         const deck = new Deck();
 
-        const stackBase = new Placeholder(document.getElementById('stack_base'));
-        stackBase._stack = stackBase._stack.concat(deck._deck.splice(0, 24));
-        stackBase._render();
+        // const stackBase = new Placeholder(document.getElementById('stack_base'));
+        // stackBase._stack = stackBase._stack.concat(deck._deck.splice(0, 24));
+        // stackBase._render();
 
         const stackBaseDrops = new Placeholder(document.getElementById('stack_base_r'));
 
@@ -26,7 +26,7 @@ class Game {
         const stack_2 = new Placeholder(document.getElementById('deck_2'));
         stack_2._stack = stack_2._stack.concat(deck._deck.splice(0, 2));
         stack_2._render();
-        
+
 
         console.log(stack_2);
 
@@ -39,6 +39,6 @@ class Game {
         // this._render();
     }
     _render() {
-        
+
     }
 }
