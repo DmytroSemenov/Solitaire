@@ -16,7 +16,7 @@ html,body {
 	background: #ddd;
 	font-size: 20px;
 	line-height: 25px;
-	display: flex;
+	/* display: flex; */
 	border-radius: 5px;
 	position: absolute;
 	padding: 5px;
@@ -27,16 +27,20 @@ html,body {
 .card__back {
     width: 100px;
 	height: 150px;
-	background: greenyellow;
+	background-color:  #030;
+	color: #030;
 	font-size: 20px;
 	line-height: 25px;
-	display: flex;
+	/* display: flex; */
 	border-radius: 5px;
 	position: absolute;
 	padding: 5px;
 	border: 2px solid #cac6c6;
-	margin: -6px 0 0 -6px;
+	margin: -6px 0 0 -7px;
 	cursor: pointer;
+}
+.card__pressed {
+	box-shadow: 0 0 10px rgba(255,255,0,1);
 }
 .card__placeholder {
     margin: 10px;
