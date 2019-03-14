@@ -6,14 +6,15 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<title>Solitaire</title>
 	<link rel="stylesheet" type="text/css" href="css/style.css">
-	<script src="js/placeholders.js" defer></script>
-	<script src="js/deck.js" defer></script>
-	<script src="js/cards.js" defer></script>
-	<script src="js/main.js" defer></script>
+	<script src="js/placeholdersUpper.js"></script>
+	<script src="js/placeholders.js"></script>
+	<script src="js/deck.js"></script>
+	<script src="js/cards.js"></script>
+	<script src="js/main.js"></script>
 </head>
 
 <body>
-	<div id="game" class="game">
+	<div id="game" class="game" onselectstart="return false" onmousedown="return false">
 		<div class="deck__main">
 			<div id="stack_base"   class="card__placeholder"></div>
 			<div id="stack_base_r" class="card__placeholder"></div>
