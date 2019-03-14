@@ -28,7 +28,7 @@ html,body {
     width: 100px;
 	height: 150px;
 	background-color:  #030;
-	color: #030;
+	color: #030 !important;
 	font-size: 20px;
 	line-height: 25px;
 	/* display: flex; */
