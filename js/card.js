@@ -11,11 +11,10 @@ class Card{
 
     this._render();
 
-    // this._element.addEventListener('click', this._handler.bind(this));
   }
 
   getElement() {
-    return this._element;
+    return this._element.children[0];
   }
 
   getValue() {

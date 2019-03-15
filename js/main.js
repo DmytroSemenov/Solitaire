@@ -4,26 +4,40 @@ const cardSettings = {
   suits: ['♠', '♣', '♦', '♥'],
   signs: ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K']
 };
-const stackNames = ['stackBase', 'stack.num_1', 'stack.num_2', 'stack.num_3', 'stack.num_4', 'stack.num_5', 'stack.num_6', 'stack.num_7', 'stack.final_1', 'stack.final_2', 'stack.final_3', 'stack.final_4', 'stackBaseR']
+const stackNames = [
+  'stackBase',
+  'stack.num_1',
+  'stack.num_2',
+  'stack.num_3',
+  'stack.num_4',
+  'stack.num_5',
+  'stack.num_6',
+  'stack.num_7',
+  'stack.final_1',
+  'stack.final_2',
+  'stack.final_3',
+  'stack.final_4',
+  'stackBaseR'
+];
 const stack = {};
+let optionsForMove = {};
+
 class Game {
   constructor() {
     const cards = this._getCards();
 
-    let optionsForMove = {};
-
     stack.base = new Placeholder({
-      element: document.querySelector('[data-stack="stack.base"]'),
-      cards: cards.splice(0, 24),
+      element: document.querySelector('[data-stack="base"]'),
+      cards: cards.splice(0, 23),
       isShifted: false,
-      isBase: true,
+      // isBase: true,
       onCardSelected: cardsSelected => {}
     });
     stack.base.getElement().addEventListener('click', this.handler);
 
     stack.baseR = new Placeholder({
-      element: document.querySelector('[data-stack="stack.baseR"]'),
-      cards: cards.splice(0, 0),
+      element: document.querySelector('[data-stack="baseR"]'),
+      cards: cards.splice(0, 1),
       isShifted: false,
       onCardSelected: cardsSelected => {}
     });
@@ -31,7 +45,7 @@ class Game {
 
     for (let i = 1; i < 8; i++) {
       stack['num_' + i] = new Placeholder({
-        element: document.querySelector(`[data-stack="stack.num_${i}"]`),
+        element: document.querySelector(`[data-stack="num_${i}"]`),
         cards: cards.splice(0, i),
         isShifted: true
       });
@@ -40,7 +54,7 @@ class Game {
 
     for (let i = 1; i < 5; i++) {
       stack['final_' + i] = new Placeholder({
-        element: document.querySelector(`[data-stack="stack.final_${i}"]`),
+        element: document.querySelector(`[data-stack="final_${i}"]`),
         cards: [],
         isShifted: false
       });
@@ -48,17 +62,79 @@ class Game {
     }
 
     optionsForMove = {
+      cardPressed: false,
+      cardPressedElement: null,
       deckFrom: stack.num_4,
       deckTo: stack.num_1,
-      cardsFrom: 1,
-    };
-    this._moveCards(optionsForMove);
+      cardsToMove: 1,
+      cardForMoving: {},
+      cardForPlacing: {},
 
-  }
+      move: this._moveCards
+    };
+  } //// end of constructor Game
 
   handler(event) {
-    console.log(this);
-    console.log(event.target);
+    ////////////////////////////////////////////////////////////////////////MUST BE ADDED king to up restrict
+    function canImove() {
+      console.log(optionsForMove);
+      if (!optionsForMove.deckTo._isShifted) {        // for 4 finish decks  && optionsForMove.cardsToMove == 1
+
+        if (optionsForMove.deckTo._stack.length == 0 && optionsForMove.cardForMoving._value == 1) return true;
+        if (optionsForMove.cardForMoving._suit == optionsForMove.cardForPlacing._suit  &&
+          optionsForMove.cardForMoving._value == optionsForMove.cardForPlacing._value + 1) return true;
+      }
+
+      if (optionsForMove.deckTo._stack.length == 0 && optionsForMove.cardForMoving._value == 13) return true;
+      ////THE MAIN RULE
+      if (optionsForMove.cardForPlacing._value - 1 == optionsForMove.cardForMoving._value &&
+        optionsForMove.cardForPlacing._isRed !== optionsForMove.cardForMoving._isRed) return true;  
+
+      return false;
+    }
+    /////////////////////////////////////////////////////////////////////////
+    if (event.target.className.includes('back')) return;
+
+    if (!optionsForMove.cardPressed) {
+      if (!stack[this.dataset.stack]._stack.length) return;
+
+      optionsForMove.deckFrom = stack[this.dataset.stack];
+      optionsForMove.cardPressed = true;
+      optionsForMove.cardPressedElement = event.target;
+
+      let flag = false;
+      for (let i = 0; i < stack[this.dataset.stack]._stack.length; i++) {
+        if (stack[this.dataset.stack]._stack[i].getElement() === event.target) {
+          optionsForMove.cardsToMove = i;
+          optionsForMove.cardForMoving = stack[this.dataset.stack]._stack[i];
+          flag = true;
+        }
+        if (flag)
+          stack[this.dataset.stack]._stack[i]
+            .getElement()
+            .classList.add('card__pressed');
+      }
+
+      return;
+    }
+
+    optionsForMove.deckTo = stack[this.dataset.stack];
+    optionsForMove.cardForPlacing =
+      stack[this.dataset.stack]._stack[
+        stack[this.dataset.stack]._stack.length - 1
+      ];
+    optionsForMove.cardPressed = false;
+    for (
+      let i = optionsForMove.cardsToMove;
+      i < optionsForMove.deckFrom._stack.length;
+      i++
+    ) {
+      optionsForMove.deckFrom._stack[i]
+        .getElement()
+        .classList.remove('card__pressed');
+    }
+
+    if (canImove()) optionsForMove.move(optionsForMove);
   }
 
   _getCards() {
@@ -87,7 +163,9 @@ class Game {
   }
 
   _moveCards(movingOptions) {
-    let movingCards = movingOptions.deckFrom._stack.splice(-1);
+    let movingCards = movingOptions.deckFrom._stack.splice(
+      optionsForMove.cardsToMove
+    );
     movingOptions.deckTo._stack.push(...movingCards);
     movingOptions.deckFrom._render();
     movingOptions.deckTo._render();
