@@ -4,20 +4,20 @@ class Placeholder {
     this._isShifted = options.isShifted;
     this._stack = options.cards;
 
-    this._render()
+    this._render();
   }
   _render() {
     this._element.innerHTML = '';
 
     if (this._stack.length) {
       this._stack[this._stack.length - 1].open();
+
       for (let i = 0; i < this._stack.length; i++) {
         let elementShifted = this._stack[i]._element;
         let marginTopY = 30 * i;
-        if (this._isShifted) elementShifted.style.marginTop = marginTopY + 'px';     
+        if (this._isShifted) elementShifted.style.marginTop = marginTopY + 'px';
         this._element.appendChild(elementShifted);
       }
     }
   }
 }
-// element, isShifted

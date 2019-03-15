@@ -1,4 +1,4 @@
-class Card {
+class Card{
   constructor(settings) {
     this._isRed = settings.isRed;
     this._suit = settings.suit;
@@ -9,6 +9,8 @@ class Card {
     this.isOpen = false;
 
     this._render();
+
+    this._element.addEventListener('click', this._handler.bind(this));
   }
 
   getElement() {
@@ -38,5 +40,9 @@ class Card {
     <div class='${classes.join(' ')}'>
     ${this._cardValue} ${this._suit}
     </div>`;
+  }
+  _handler(event) {
+    this._element.children[0].classList.toggle('card__pressed');
+    console.log(this);
   }
 }
