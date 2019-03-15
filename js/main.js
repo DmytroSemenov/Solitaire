@@ -4,34 +4,34 @@ const cardSettings = {
   suits: ['♠', '♣', '♦', '♥'],
   signs: ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K']
 };
-const stackNames = ['stackBase', 'stack.num_1', 'stack.num_2', 'stack.num_3', 'stack.num_4', 'stack.num_5', 'stack.num_6', 'stack.num_7', 'stack.final_1', 'stack.final_2', 'stack.final_3', 'stack.final_4', 'stackBase_r']
+const stackNames = ['stackBase', 'stack.num_1', 'stack.num_2', 'stack.num_3', 'stack.num_4', 'stack.num_5', 'stack.num_6', 'stack.num_7', 'stack.final_1', 'stack.final_2', 'stack.final_3', 'stack.final_4', 'stackBaseR']
 const stack = {};
 class Game {
   constructor() {
     const cards = this._getCards();
-    let optionsForMove = {};
-    
 
-    const stackBase = new Placeholder({
-      element: document.getElementById('stack_base'),
+    let optionsForMove = {};
+
+    stack.base = new Placeholder({
+      element: document.querySelector('[data-stack="stack.base"]'),
       cards: cards.splice(0, 24),
       isShifted: false,
       isBase: true,
       onCardSelected: cardsSelected => {}
     });
-    stackBase.getElement().addEventListener('click', this.handler);
+    stack.base.getElement().addEventListener('click', this.handler);
 
-    const stackBase_r = new Placeholder({
-      element: document.getElementById('stack_base_r'),
+    stack.baseR = new Placeholder({
+      element: document.querySelector('[data-stack="stack.baseR"]'),
       cards: cards.splice(0, 0),
       isShifted: false,
       onCardSelected: cardsSelected => {}
     });
-    stackBase_r.getElement().addEventListener('click', this.handler);
+    stack.baseR.getElement().addEventListener('click', this.handler);
 
     for (let i = 1; i < 8; i++) {
       stack['num_' + i] = new Placeholder({
-        element: document.getElementById(['deck_' + i]),
+        element: document.querySelector(`[data-stack="stack.num_${i}"]`),
         cards: cards.splice(0, i),
         isShifted: true
       });
@@ -40,7 +40,7 @@ class Game {
 
     for (let i = 1; i < 5; i++) {
       stack['final_' + i] = new Placeholder({
-        element: document.getElementById(['deck__final__' + i]),
+        element: document.querySelector(`[data-stack="stack.final_${i}"]`),
         cards: [],
         isShifted: false
       });
