@@ -5,12 +5,13 @@ class Card{
     this._cardValue = settings.cardValue;
     this._value = settings.value;
     this._element = document.createElement('div');
+    this._cardPressed = null;
 
     this.isOpen = false;
 
     this._render();
 
-    this._element.addEventListener('click', this._handler.bind(this));
+    // this._element.addEventListener('click', this._handler.bind(this));
   }
 
   getElement() {
@@ -19,6 +20,11 @@ class Card{
 
   getValue() {
     return this._value;
+  }
+
+  getCard() {
+    console.log(this);
+    return this
   }
 
   open() {
@@ -41,8 +47,7 @@ class Card{
     ${this._cardValue} ${this._suit}
     </div>`;
   }
-  _handler(event) {
-    this._element.children[0].classList.toggle('card__pressed');
-    console.log(this);
+  _handler() {
+    this._cardPressed = this;
   }
 }

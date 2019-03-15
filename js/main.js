@@ -4,23 +4,30 @@ const cardSettings = {
   suits: ['♠', '♣', '♦', '♥'],
   signs: ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K']
 };
-
-// const stackNames = ['base', 'work1', 'work2', 'work3', 'work4', 'work5', 'work6', 'work7', 'fin1', 'fin2', 'fin3', 'fin4']
+const stackNames = ['stackBase', 'stack.num_1', 'stack.num_2', 'stack.num_3', 'stack.num_4', 'stack.num_5', 'stack.num_6', 'stack.num_7', 'stack.final_1', 'stack.final_2', 'stack.final_3', 'stack.final_4', 'stackBase_r']
 const stack = {};
 class Game {
   constructor() {
     const cards = this._getCards();
+    let optionsForMove = {};
+    
 
     const stackBase = new Placeholder({
       element: document.getElementById('stack_base'),
       cards: cards.splice(0, 24),
       isShifted: false,
+      isBase: true,
       onCardSelected: cardsSelected => {}
     });
+    stackBase.getElement().addEventListener('click', this.handler);
 
-    // const stackBaseDrops = new PlaceholderBase(
-    //   document.getElementById('stack_base_r')
-    // );
+    const stackBase_r = new Placeholder({
+      element: document.getElementById('stack_base_r'),
+      cards: cards.splice(0, 0),
+      isShifted: false,
+      onCardSelected: cardsSelected => {}
+    });
+    stackBase_r.getElement().addEventListener('click', this.handler);
 
     for (let i = 1; i < 8; i++) {
       stack['num_' + i] = new Placeholder({
@@ -28,6 +35,7 @@ class Game {
         cards: cards.splice(0, i),
         isShifted: true
       });
+      stack['num_' + i].getElement().addEventListener('click', this.handler);
     }
 
     for (let i = 1; i < 5; i++) {
@@ -36,12 +44,21 @@ class Game {
         cards: [],
         isShifted: false
       });
+      stack['final_' + i].getElement().addEventListener('click', this.handler);
     }
 
-    // const game = document.querySelector('#game');
-    // game.addEventListener('click', event => {
-    //   console.log(event.target);
-    // });
+    optionsForMove = {
+      deckFrom: stack.num_4,
+      deckTo: stack.num_1,
+      cardsFrom: 1,
+    };
+    this._moveCards(optionsForMove);
+
+  }
+
+  handler(event) {
+    console.log(this);
+    console.log(event.target);
   }
 
   _getCards() {
@@ -69,9 +86,11 @@ class Game {
     return baseDeck.sort((a, b) => Math.random() - 0.5);
   }
 
-  handler(event) {
-    this._element.children[0].classList.toggle('card__pressed');
-    console.log(this);
+  _moveCards(movingOptions) {
+    let movingCards = movingOptions.deckFrom._stack.splice(-1);
+    movingOptions.deckTo._stack.push(...movingCards);
+    movingOptions.deckFrom._render();
+    movingOptions.deckTo._render();
   }
 }
 
