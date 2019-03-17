@@ -28,16 +28,16 @@ class Game {
 
     stack.base = new Placeholder({
       element: document.querySelector('[data-stack="base"]'),
-      cards: cards.splice(0, 23),
+      cards: cards.splice(0, 24),
       isShifted: false,
-      // isBase: true,
+      isBase: true,
       onCardSelected: cardsSelected => {}
     });
     stack.base.getElement().addEventListener('click', this.handler);
 
     stack.baseR = new Placeholder({
       element: document.querySelector('[data-stack="baseR"]'),
-      cards: cards.splice(0, 1),
+      cards: [],
       isShifted: false,
       onCardSelected: cardsSelected => {}
     });
@@ -75,24 +75,62 @@ class Game {
   } //// end of constructor Game
 
   handler(event) {
-    ////////////////////////////////////////////////////////////////////////MUST BE ADDED king to up restrict
+    //////////////////////////////////////MUST BE ADDED restrict moving king to upper decks  
     function canImove() {
-      console.log(optionsForMove);
-      if (!optionsForMove.deckTo._isShifted) {        // for 4 finish decks  && optionsForMove.cardsToMove == 1
+      // console.log(optionsForMove);
+      if (!optionsForMove.deckTo._isShifted) {
+        // for 4 finish decks  && optionsForMove.cardsToMove == 1
 
-        if (optionsForMove.deckTo._stack.length == 0 && optionsForMove.cardForMoving._value == 1) return true;
-        if (optionsForMove.cardForMoving._suit == optionsForMove.cardForPlacing._suit  &&
-          optionsForMove.cardForMoving._value == optionsForMove.cardForPlacing._value + 1) return true;
+        if (
+          optionsForMove.deckTo._stack.length == 0 &&
+          optionsForMove.cardForMoving._value == 1
+        )
+          return true;
+        if (
+          optionsForMove.cardForMoving._suit ==
+            optionsForMove.cardForPlacing._suit &&
+          optionsForMove.cardForMoving._value ==
+            optionsForMove.cardForPlacing._value + 1
+        )
+          return true;
       }
 
-      if (optionsForMove.deckTo._stack.length == 0 && optionsForMove.cardForMoving._value == 13) return true;
+      if (
+        optionsForMove.deckTo._stack.length == 0 &&
+        optionsForMove.deckTo._isShifted === true &&
+        optionsForMove.cardForMoving._value == 13
+      )
+        return true;
       ////THE MAIN RULE
-      if (optionsForMove.cardForPlacing._value - 1 == optionsForMove.cardForMoving._value &&
-        optionsForMove.cardForPlacing._isRed !== optionsForMove.cardForMoving._isRed) return true;  
+      if (
+        optionsForMove.cardForPlacing._value - 1 ==
+          optionsForMove.cardForMoving._value &&
+        optionsForMove.cardForPlacing._isRed !==
+          optionsForMove.cardForMoving._isRed
+      )
+        return true;
 
       return false;
     }
     /////////////////////////////////////////////////////////////////////////
+    if (this.dataset.stack == 'base') {
+      if (stack.base._stack.length == 0) {
+        for (let i = 0; i < stack.baseR._stack.length; i++){
+          stack.baseR._stack[i].close();
+        }
+        optionsForMove.deckFrom = stack.baseR;
+        optionsForMove.deckTo = stack.base;
+        optionsForMove.cardsToMove = 0;
+       
+      } else {
+        optionsForMove.deckFrom = stack.base;
+        optionsForMove.deckTo = stack.baseR;
+        optionsForMove.cardsToMove = stack.base._stack.length - 1;
+      }
+      optionsForMove.move(optionsForMove);
+      return;
+    }
+
     if (event.target.className.includes('back')) return;
 
     if (!optionsForMove.cardPressed) {

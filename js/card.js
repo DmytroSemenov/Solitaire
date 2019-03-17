@@ -32,6 +32,12 @@ class Card{
     this._render;
   }
 
+  close() {
+    this.isOpen = false;
+    this._element.children[0].classList.add('card__back');
+    this._render;
+  }
+
   _render() {
     const classes = ['card'];
 
