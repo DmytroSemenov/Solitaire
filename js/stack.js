@@ -3,18 +3,18 @@ class Stack {
     this._element = element;
     this._cards = cards;
 
-    this._element.addEventListener('cardSelected', (event) => {
+    this._element.addEventListener('cardSelected', event => {
       const index = this._cards.indexOf(event.detail);
       const selectedCards = this._cards.slice(index);
-      onCardSelected(selectedCards, this)
+      onCardSelected(selectedCards, this);
     });
 
-    this._element.addEventListener('click', (event) => {
+    this._element.addEventListener('click', event => {
       if (this._cards.length > 0 || event.isCardClickHandled) {
         return;
       }
 
-      onCardSelected([], this)
+      onCardSelected([], this);
     });
 
     this._render();
@@ -24,19 +24,13 @@ class Stack {
     return this._cards;
   }
 
-  canAccept(card) {
-    return true;
-  }
-
   addCards(cards) {
     this._cards.push(...cards);
     this._render();
   }
 
   removeCards(cards) {
-    this._cards = this._cards.filter(
-      card => !cards.includes(card)
-    );
+    this._cards = this._cards.filter(card => !cards.includes(card));
 
     this._render();
   }
@@ -46,8 +40,7 @@ class Stack {
   }
 
   unselect() {
-    this._cards
-      .forEach(card => card.toggleSelecteion(false));
+    this._cards.forEach(card => card.toggleSelecteion(false));
   }
 
   _render() {
@@ -71,8 +64,10 @@ class WorkingStack extends Stack {
 
     const lastCard = this._getLastCard();
 
-    return lastCard._value === cards[0]._value + 1
-      && lastCard._isRed !== cards[0]._isRed;
+    return (
+      lastCard._value === cards[0]._value + 1 &&
+      lastCard._isRed !== cards[0]._isRed
+    );
   }
 
   _render() {
@@ -100,8 +95,10 @@ class FinalStack extends Stack {
 
     const lastCard = this._getLastCard();
 
-    return cards[0]._suit === lastCard._suit
-      && cards[0]._value === lastCard._value + 1;
+    return (
+      cards[0]._suit === lastCard._suit &&
+      cards[0]._value === lastCard._value + 1
+    );
   }
 
   _render() {

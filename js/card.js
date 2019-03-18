@@ -1,4 +1,3 @@
-
 class Card {
   constructor({ suitIndex, signIndex }) {
     this._element = document.createElement('div');
@@ -13,10 +12,10 @@ class Card {
 
     this._render();
 
-    this._element.addEventListener('click', (event) => {
+    this._element.addEventListener('click', event => {
       const myEvent = new CustomEvent('cardSelected', {
         detail: this,
-        bubbles: true,
+        bubbles: true
       });
       this._element.dispatchEvent(myEvent);
 
@@ -29,7 +28,7 @@ class Card {
   }
 
   setIndex(index) {
-    this._element.style.marginTop = `${VISUAL_CARD_SHIFT * index}px` ;
+    this._element.style.marginTop = `${VISUAL_CARD_SHIFT * index}px`;
   }
 
   open() {
@@ -56,6 +55,6 @@ class Card {
     }
 
     this._element.innerHTML = `${this._sign} ${this._suit}`;
-    this._element.className = classes.join(' ')
+    this._element.className = classes.join(' ');
   }
 }
