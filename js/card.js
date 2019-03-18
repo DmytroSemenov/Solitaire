@@ -22,7 +22,6 @@ class Card{
   }
 
   getCard() {
-    console.log(this);
     return this
   }
 
