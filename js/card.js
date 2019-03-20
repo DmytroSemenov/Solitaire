@@ -31,6 +31,10 @@ class Card {
     this._element.style.marginTop = `${VISUAL_CARD_SHIFT * index}px`;
   }
 
+  setIndexRight(index) {
+    this._element.style.marginLeft = `${VISUAL_CARD_SHIFT * index}px`;
+  }
+
   open() {
     this.isOpen = true;
     this._element.classList.remove('card--closed');

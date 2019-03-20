@@ -33,7 +33,13 @@ class Game {
       cards: cards,
 
       onCardSelected: cards => {
+        right.unselect();
         if (left.getCards().length > 0) {
+          if (THREE)
+            cards = left
+              .getCards()
+              .slice(-3)
+              .reverse();
           left.removeCards(cards);
           cards.forEach(card => card.open());
           right.addCards(cards);
@@ -47,7 +53,7 @@ class Game {
       }
     });
 
-    const right = new BaseStack({
+    const right = new BaseStackRight({
       element: document.querySelector('[data-stack="baseR"]'),
       onCardSelected: this._onCardSelected
     });
@@ -59,6 +65,9 @@ class Game {
       if (cards.length === 0 || !cards[0].isOpen) {
         return;
       }
+      if (stack.getElement().dataset.stack === 'baseR') {
+        cards = cards.slice(-1);
+      }
       this.selectedCards = cards;
       this.selectedStack = stack;
       stack.select(cards);
@@ -67,7 +76,6 @@ class Game {
     }
     // 2nd click
     this.selectedStack.unselect();
-
     if (this.selectedCards[0] === cards[0]) {
       for (let i = 1; i <= SUITS.length; i++) {
         if (this.finalStack[i].canAccept(this.selectedCards)) {
@@ -80,6 +88,9 @@ class Game {
     if (!stack.canAccept(this.selectedCards)) {
       if (cards.length === 0 || !cards[0].isOpen) {
         return;
+      }
+      if (stack.getElement().dataset.stack === 'baseR') {
+        cards = cards.slice(-1);
       }
       this.selectedCards = cards;
       this.selectedStack = stack;

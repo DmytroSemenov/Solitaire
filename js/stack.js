@@ -24,6 +24,10 @@ class Stack {
     return this._cards;
   }
 
+  getElement() {
+    return this._element;
+  }
+
   addCards(cards) {
     this._cards.push(...cards);
     this._render();
@@ -47,6 +51,7 @@ class Stack {
     this._element.innerHTML = '';
 
     for (const card of this._cards) {
+      card.getElement().style.marginLeft = '-2px';
       this._element.appendChild(card.getElement());
     }
   }
@@ -113,5 +118,22 @@ class FinalStack extends Stack {
 class BaseStack extends Stack {
   canAccept() {
     return false;
+  }
+}
+
+class BaseStackRight extends Stack {
+  canAccept() {
+    return false;
+  }
+
+  _render() {
+    super._render();
+
+    if (THREE) {
+      let shift = 3 - (this._cards.length % 3);
+      for (let i = 0; i < this._cards.length; i++) {
+        this._cards[i].setIndexRight((i + shift) % 3);
+      }
+    }
   }
 }
