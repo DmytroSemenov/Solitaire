@@ -77,8 +77,12 @@ class Game {
   _onCardSelected(cards, stack) {
     // 1st click
     clearTimeout(this.timerId);
-    if (this.cardsFromHint[0]) this.cardsFromHint[0].toggleSelecteion(false);
-    if (this.cardToHint[0]) this.cardToHint[0].toggleSelecteion(false);
+    if (this.cardsFromHint[0]) {
+      this.cardsFromHint[0].toggleSelecteion(false);
+    }
+    if (this.cardToHint[0]) {
+      this.cardToHint[0].toggleSelecteion(false);
+    }
     this.timerId = setTimeout(this._hasNextTurn, 2000);
 
     if (!this.selectedStack) {
@@ -165,10 +169,9 @@ class Game {
   }
 
   _hasNextTurn() {
-    console.log('hasNextTur');
-    if (this.baseRight.getCards().length) {
-      let stack = this.baseRight;
-      this.cardsFromHint = stack.getCards().slice(-1);
+    console.log('hasNextTurn');
+    if (this.baseRight.getCards().length !== 0) {
+      this.cardsFromHint = this.baseRight.getCards().slice(-1);
 
       for (let i = 1; i <= SUITS.length; i++) {
         if (this.finalStacks[i].canAccept(this.cardsFromHint)) {
