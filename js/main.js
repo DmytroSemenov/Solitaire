@@ -9,12 +9,13 @@ class Game {
   start() {
     this.selectedCards = [];
     this.selectedStack = null;
-    this.finalStack = [];
+    this.finalStacks = [];
+    this.workStacks = [];
 
     const cards = this._getCards();
 
     for (let i = 1; i <= NUMBER_OF_WORKING_STACKS; i++) {
-      new WorkingStack({
+      this.workStacks[i] = new WorkingStack({
         element: document.querySelector(`[data-stack="num_${i}"]`),
         cards: cards.splice(0, i),
         onCardSelected: this._onCardSelected
@@ -22,38 +23,38 @@ class Game {
     }
 
     for (let i = 1; i <= SUITS.length; i++) {
-      this.finalStack[i] = new FinalStack({
+      this.finalStacks[i] = new FinalStack({
         element: document.querySelector(`[data-stack="final_${i}"]`),
         onCardSelected: this._onCardSelected
       });
     }
 
-    const left = new BaseStack({
+    this.baseLeft = new BaseStack({
       element: document.querySelector('[data-stack="base"]'),
       cards: cards,
 
       onCardSelected: cards => {
-        right.unselect();
-        if (left.getCards().length > 0) {
+        this.baseRight.unselect();
+        if (this.baseLeft.getCards().length > 0) {
           if (THREE)
-            cards = left
+            cards = this.baseLeft
               .getCards()
               .slice(-3)
               .reverse();
-          left.removeCards(cards);
+          this.baseLeft.removeCards(cards);
           cards.forEach(card => card.open());
-          right.addCards(cards);
+          this.baseRight.addCards(cards);
         } else {
-          const rightCards = right.getCards();
-          right.removeCards(rightCards);
+          const rightCards = this.baseRight.getCards();
+          this.baseRight.removeCards(rightCards);
           rightCards.forEach(card => card.close());
           rightCards.reverse();
-          left.addCards(rightCards);
+          this.baseLeft.addCards(rightCards);
         }
       }
     });
 
-    const right = new BaseStackRight({
+    this.baseRight = new BaseStackRight({
       element: document.querySelector('[data-stack="baseR"]'),
       onCardSelected: this._onCardSelected
     });
@@ -78,8 +79,8 @@ class Game {
     this.selectedStack.unselect();
     if (this.selectedCards[0] === cards[0]) {
       for (let i = 1; i <= SUITS.length; i++) {
-        if (this.finalStack[i].canAccept(this.selectedCards)) {
-          stack = this.finalStack[i];
+        if (this.finalStacks[i].canAccept(this.selectedCards)) {
+          stack = this.finalStacks[i];
           break;
         }
       }
@@ -105,6 +106,7 @@ class Game {
     this.selectedCards = [];
     this.selectedStack = null;
     this._isWin();
+    this._hasNextTurn();
   }
 
   _getCards() {
@@ -133,7 +135,7 @@ class Game {
   _isWin() {
     let counterOfKings = 0;
     for (let i = 1; i <= SUITS.length; i++) {
-      let cardForAnalyze = this.finalStack[i].getCards().slice(-1);
+      let cardForAnalyze = this.finalStacks[i].getCards().slice(-1);
       if (!cardForAnalyze[0]) {
         return false;
       }
@@ -142,6 +144,22 @@ class Game {
     if (counterOfKings === 4) {
       document.querySelector('.winner').style.display = 'block';
     }
+  }
+
+  _hasNextTurn() {
+    if (this.baseRight.getCards().length) {
+      let stack = this.baseRight;
+      let card = stack.getCards().slice(-1);
+
+      for (let i = 1; i <= SUITS.length; i++) {
+        if (this.finalStacks[i].canAccept(card)) {
+          card.toggleSelecteion(true);
+          this.finalStacks[i].
+        }
+      }
+    }
+
+    return;
   }
 }
 
