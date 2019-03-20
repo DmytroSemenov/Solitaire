@@ -3,6 +3,7 @@
 class Game {
   constructor() {
     this._onCardSelected = this._onCardSelected.bind(this);
+    this._hasNextTurn = this._hasNextTurn.bind(this);
     this.start();
   }
 
@@ -11,6 +12,10 @@ class Game {
     this.selectedStack = null;
     this.finalStacks = [];
     this.workStacks = [];
+
+    this.cardsFromHint = [];
+    this.cardToHint = [];
+    this.timerId = null;
 
     const cards = this._getCards();
 
@@ -34,6 +39,15 @@ class Game {
       cards: cards,
 
       onCardSelected: cards => {
+        clearTimeout(this.timerId);
+        if (this.cardsFromHint[0]) {
+          this.cardsFromHint[0].toggleSelecteion(false);
+        }
+        if (this.cardToHint[0]) {
+          this.cardToHint[0].toggleSelecteion(false);
+        }
+        this.timerId = setTimeout(this._hasNextTurn, 1000);
+
         this.baseRight.unselect();
         if (this.baseLeft.getCards().length > 0) {
           if (THREE)
@@ -62,6 +76,11 @@ class Game {
 
   _onCardSelected(cards, stack) {
     // 1st click
+    clearTimeout(this.timerId);
+    if (this.cardsFromHint[0]) this.cardsFromHint[0].toggleSelecteion(false);
+    if (this.cardToHint[0]) this.cardToHint[0].toggleSelecteion(false);
+    this.timerId = setTimeout(this._hasNextTurn, 2000);
+
     if (!this.selectedStack) {
       if (cards.length === 0 || !cards[0].isOpen) {
         return;
@@ -106,7 +125,6 @@ class Game {
     this.selectedCards = [];
     this.selectedStack = null;
     this._isWin();
-    this._hasNextTurn();
   }
 
   _getCards() {
@@ -147,14 +165,42 @@ class Game {
   }
 
   _hasNextTurn() {
+    console.log('hasNextTur');
     if (this.baseRight.getCards().length) {
       let stack = this.baseRight;
-      let card = stack.getCards().slice(-1);
+      this.cardsFromHint = stack.getCards().slice(-1);
 
       for (let i = 1; i <= SUITS.length; i++) {
-        if (this.finalStacks[i].canAccept(card)) {
-          card.toggleSelecteion(true);
-          this.finalStacks[i].
+        if (this.finalStacks[i].canAccept(this.cardsFromHint)) {
+          this.cardToHint = this.finalStacks[i].getCards().slice(-1);
+          this.cardsFromHint[0].toggleSelecteion(true);
+          if (this.cardToHint[0]) this.cardToHint[0].toggleSelecteion(true);
+
+          return true;
+        }
+      }
+      for (let i = 1; i <= NUMBER_OF_WORKING_STACKS; i++) {
+        if (this.workStacks[i].canAccept(this.cardsFromHint)) {
+          this.cardToHint = this.workStacks[i].getCards().slice(-1);
+          this.cardsFromHint[0].toggleSelecteion(true);
+          if (this.cardToHint[0]) this.cardToHint[0].toggleSelecteion(true);
+
+          return true;
+        }
+      }
+    }
+
+    for (let i = 1; i <= NUMBER_OF_WORKING_STACKS; i++) {
+      this.cardsFromHint = this.workStacks[i].getCards().slice(-1);
+      if (this.cardsFromHint.length === 0) continue;
+
+      for (let i = 1; i <= SUITS.length; i++) {
+        if (this.finalStacks[i].canAccept(this.cardsFromHint)) {
+          this.cardToHint = this.finalStacks[i].getCards().slice(-1);
+          this.cardsFromHint[0].toggleSelecteion(true);
+          if (this.cardToHint[0]) this.cardToHint[0].toggleSelecteion(true);
+
+          return true;
         }
       }
     }
