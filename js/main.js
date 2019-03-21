@@ -50,7 +50,7 @@ class Game {
 
         this.baseRight.unselect();
         if (this.baseLeft.getCards().length > 0) {
-          if (THREE)
+          if (THREE_CARDS_DEAL)
             cards = this.baseLeft
               .getCards()
               .slice(-3)
@@ -83,7 +83,7 @@ class Game {
     if (this.cardToHint[0]) {
       this.cardToHint.forEach(card => card.toggleSelecteion(false));
     }
-    this.timerId = setTimeout(this._hasNextTurn, 2000);
+    this.timerId = setTimeout(this._hasNextTurn, DELAY_TO_HINT);
 
     if (!this.selectedStack) {
       if (cards.length === 0 || !cards[0].isOpen) {
@@ -169,64 +169,57 @@ class Game {
   }
 
   _hasNextTurn() {
-    // console.log('hasNextTurn');
     if (this.baseRight.getCards().length !== 0) {
       this.cardsFromHint = this.baseRight.getCards().slice(-1);
 
-      for (let i = 1; i <= SUITS.length; i++) {
-        if (this.finalStacks[i].canAccept(this.cardsFromHint)) {
-          this.cardToHint = this.finalStacks[i].getCards().slice(-1);
-          this.cardsFromHint[0].toggleSelecteion(true);
-          if (this.cardToHint[0]) this.cardToHint[0].toggleSelecteion(true);
-
-          return true;
-        }
+      if (this._ifCanAcceptMark(SUITS.length, this.finalStacks)) {
+        return true;
       }
-      for (let i = 1; i <= NUMBER_OF_WORKING_STACKS; i++) {
-        if (this.workStacks[i].canAccept(this.cardsFromHint)) {
-          this.cardToHint = this.workStacks[i].getCards().slice(-1);
-          this.cardsFromHint[0].toggleSelecteion(true);
-          if (this.cardToHint[0]) this.cardToHint[0].toggleSelecteion(true);
-
-          return true;
-        }
+      if (this._ifCanAcceptMark(NUMBER_OF_WORKING_STACKS, this.workStacks)) {
+        return true;
       }
     }
 
     for (let i = 1; i <= NUMBER_OF_WORKING_STACKS; i++) {
       this.cardsFromHint = this.workStacks[i].getCards().slice(-1);
-      if (this.cardsFromHint.length === 0) continue;
+      
+      if (this.cardsFromHint.length === 0) {
+        continue;
+      }
 
-      for (let i = 1; i <= SUITS.length; i++) {
-        if (this.finalStacks[i].canAccept(this.cardsFromHint)) {
-          this.cardToHint = this.finalStacks[i].getCards().slice(-1);
-          this.cardsFromHint[0].toggleSelecteion(true);
-          if (this.cardToHint[0]) this.cardToHint[0].toggleSelecteion(true);
-
-          return true;
-        }
+      if (this._ifCanAcceptMark(SUITS.length, this.finalStacks)) {
+        return true;
       }
     }
+
     for (let i = 1; i <= NUMBER_OF_WORKING_STACKS; i++) {
       let deckTested = this.workStacks[i].getCards();
-      if (deckTested.length === 0) continue;
+      if (deckTested.length === 0) {
+        continue;
+      }
 
       for (let index = 0; index < deckTested.length; index++) {
         if (deckTested[index].isOpen) {
           this.cardsFromHint = deckTested.slice(index);
-
           break;
         }
       }
 
-      for (let i = 1; i <= NUMBER_OF_WORKING_STACKS; i++) {
-        if (this.workStacks[i].canAccept(this.cardsFromHint)) {
-          this.cardToHint = this.workStacks[i].getCards().slice(-1);
-          this.cardsFromHint.forEach(card => card.toggleSelecteion(true));
-          if (this.cardToHint[0]) this.cardToHint[0].toggleSelecteion(true);
+      if (this._ifCanAcceptMark(NUMBER_OF_WORKING_STACKS, this.workStacks)) {
+        return true;
+      }
+    }
+    return false;
+  }
 
-          return true;
-        }
+  _ifCanAcceptMark(numberOfStacks, targetStacks) {
+    for (let i = 1; i <= numberOfStacks; i++) {
+      if (targetStacks[i].canAccept(this.cardsFromHint)) {
+        this.cardToHint = targetStacks[i].getCards().slice(-1);
+        this.cardsFromHint.forEach(card => card.toggleSelecteion(true));
+        if (this.cardToHint[0]) this.cardToHint[0].toggleSelecteion(true);
+
+        return true;
       }
     }
     return false;
