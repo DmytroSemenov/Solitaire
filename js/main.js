@@ -78,10 +78,10 @@ class Game {
     // 1st click
     clearTimeout(this.timerId);
     if (this.cardsFromHint[0]) {
-      this.cardsFromHint[0].toggleSelecteion(false);
+      this.cardsFromHint.forEach(card => card.toggleSelecteion(false));
     }
     if (this.cardToHint[0]) {
-      this.cardToHint[0].toggleSelecteion(false);
+      this.cardToHint.forEach(card => card.toggleSelecteion(false));
     }
     this.timerId = setTimeout(this._hasNextTurn, 2000);
 
@@ -169,7 +169,7 @@ class Game {
   }
 
   _hasNextTurn() {
-    console.log('hasNextTurn');
+    // console.log('hasNextTurn');
     if (this.baseRight.getCards().length !== 0) {
       this.cardsFromHint = this.baseRight.getCards().slice(-1);
 
@@ -207,8 +207,29 @@ class Game {
         }
       }
     }
+    for (let i = 1; i <= NUMBER_OF_WORKING_STACKS; i++) {
+      let deckTested = this.workStacks[i].getCards();
+      if (deckTested.length === 0) continue;
 
-    return;
+      for (let index = 0; index < deckTested.length; index++) {
+        if (deckTested[index].isOpen) {
+          this.cardsFromHint = deckTested.slice(index);
+
+          break;
+        }
+      }
+
+      for (let i = 1; i <= NUMBER_OF_WORKING_STACKS; i++) {
+        if (this.workStacks[i].canAccept(this.cardsFromHint)) {
+          this.cardToHint = this.workStacks[i].getCards().slice(-1);
+          this.cardsFromHint.forEach(card => card.toggleSelecteion(true));
+          if (this.cardToHint[0]) this.cardToHint[0].toggleSelecteion(true);
+
+          return true;
+        }
+      }
+    }
+    return false;
   }
 }
 
