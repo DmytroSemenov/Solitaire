@@ -169,6 +169,9 @@ class Game {
   }
 
   _hasNextTurn() {
+    if (this.selectedStack) {
+      this.selectedStack.unselect();
+    }
     if (this.baseRight.getCards().length !== 0) {
       this.cardsFromHint = this.baseRight.getCards().slice(-1);
 
@@ -182,7 +185,7 @@ class Game {
 
     for (let i = 1; i <= NUMBER_OF_WORKING_STACKS; i++) {
       this.cardsFromHint = this.workStacks[i].getCards().slice(-1);
-      
+
       if (this.cardsFromHint.length === 0) {
         continue;
       }
@@ -218,7 +221,6 @@ class Game {
         this.cardToHint = targetStacks[i].getCards().slice(-1);
         this.cardsFromHint.forEach(card => card.toggleSelecteion(true));
         if (this.cardToHint[0]) this.cardToHint[0].toggleSelecteion(true);
-
         return true;
       }
     }
