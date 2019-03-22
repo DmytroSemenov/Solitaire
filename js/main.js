@@ -39,14 +39,7 @@ class Game {
       cards: cards,
 
       onCardSelected: cards => {
-        clearTimeout(this.timerId);
-        if (this.cardsFromHint[0]) {
-          this.cardsFromHint[0].toggleSelecteion(false);
-        }
-        if (this.cardToHint[0]) {
-          this.cardToHint[0].toggleSelecteion(false);
-        }
-        this.timerId = setTimeout(this._hasNextTurn, DELAY_TO_HINT);
+        this._reSetTimeout();
 
         this.baseRight.unselect();
         if (this.baseLeft.getCards().length > 0) {
@@ -76,14 +69,7 @@ class Game {
 
   _onCardSelected(cards, stack) {
     // 1st click
-    clearTimeout(this.timerId);
-    if (this.cardsFromHint[0]) {
-      this.cardsFromHint.forEach(card => card.toggleSelecteion(false));
-    }
-    if (this.cardToHint[0]) {
-      this.cardToHint.forEach(card => card.toggleSelecteion(false));
-    }
-    this.timerId = setTimeout(this._hasNextTurn, DELAY_TO_HINT);
+    this._reSetTimeout();
 
     if (!this.selectedStack) {
       if (cards.length === 0 || !cards[0].isOpen) {
@@ -161,7 +147,7 @@ class Game {
       if (!cardForAnalyze[0]) {
         return false;
       }
-      if (cardForAnalyze[0]._sign === 'K') counterOfKings++;
+      if (cardForAnalyze[0].getSign() === 'K') counterOfKings++;
     }
     if (counterOfKings === 4) {
       document.querySelector('.winner').style.display = 'block';
@@ -200,6 +186,9 @@ class Game {
       if (deckTested.length === 0) {
         continue;
       }
+      if (deckTested[0].isOpen && deckTested[0].getSign() === 'K') {
+        continue;
+      }
 
       for (let index = 0; index < deckTested.length; index++) {
         if (deckTested[index].isOpen) {
@@ -225,6 +214,17 @@ class Game {
       }
     }
     return false;
+  }
+
+  _reSetTimeout() {
+    clearTimeout(this.timerId);
+    if (this.cardsFromHint[0]) {
+      this.cardsFromHint.forEach(card => card.toggleSelecteion(false));
+    }
+    if (this.cardToHint[0]) {
+      this.cardToHint.forEach(card => card.toggleSelecteion(false));
+    }
+    this.timerId = setTimeout(this._hasNextTurn, DELAY_TO_HINT);
   }
 }
 

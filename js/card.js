@@ -27,6 +27,10 @@ class Card {
     return this._element;
   }
 
+  getSign() {
+    return this._sign;
+  }
+
   setIndex(index) {
     this._element.style.marginTop = `${VISUAL_CARD_SHIFT * index}px`;
   }

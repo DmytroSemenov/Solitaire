@@ -35,7 +35,6 @@ class Stack {
 
   removeCards(cards) {
     this._cards = this._cards.filter(card => !cards.includes(card));
-
     this._render();
   }
 
