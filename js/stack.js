@@ -132,7 +132,7 @@ class BaseStackRight extends Stack {
     if (THREE_CARDS_DEAL) {
       let shift = 3 - (this._cards.length % 3);
       for (let i = 0; i < this._cards.length; i++) {
-        this._cards[i].setIndexRight((i + shift) % 3);
+        this._cards[i].setShiftRight((i + shift) % 3);
       }
     }
   }

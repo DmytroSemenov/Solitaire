@@ -31,7 +31,7 @@ class Card {
     this._element.style.marginTop = `${VISUAL_CARD_SHIFT * index}px`;
   }
 
-  setIndexRight(index) {
+  setShiftRight(index) {
     this._element.style.marginLeft = `${VISUAL_CARD_SHIFT * index}px`;
   }
 

@@ -46,7 +46,7 @@ class Game {
         if (this.cardToHint[0]) {
           this.cardToHint[0].toggleSelecteion(false);
         }
-        this.timerId = setTimeout(this._hasNextTurn, 1000);
+        this.timerId = setTimeout(this._hasNextTurn, DELAY_TO_HINT);
 
         this.baseRight.unselect();
         if (this.baseLeft.getCards().length > 0) {
