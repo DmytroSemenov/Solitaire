@@ -201,6 +201,10 @@ class Game {
         continue;
       }
 
+      if (deckTested[0].isOpen && deckTested[0]._sign === 'K') {
+        continue;
+      }
+
       for (let index = 0; index < deckTested.length; index++) {
         if (deckTested[index].isOpen) {
           this.cardsFromHint = deckTested.slice(index);
