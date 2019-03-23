@@ -1,19 +1,27 @@
 class Stack {
-  constructor({ element, cards = [], onCardSelected }) {
+  constructor({ element, cards = [], onCardSelected, isBase = false }) {
     this._element = element;
     this._cards = cards;
+    this._isBase = isBase;
 
     this._element.addEventListener('cardSelected', event => {
-      const index = this._cards.indexOf(event.detail);
+      let index = this._cards.indexOf(event.detail);
+      if (isBase) index = -1;
       const selectedCards = this._cards.slice(index);
       onCardSelected(selectedCards, this);
     });
+
+    if (!isBase) {
+      this._element.addEventListener('mouseup', event => {
+        const selectedCards = this._cards.slice(-1);
+        onCardSelected(selectedCards, this);
+      });
+    }
 
     this._element.addEventListener('click', event => {
       if (this._cards.length > 0 || event.isCardClickHandled) {
         return;
       }
-
       onCardSelected([], this);
     });
 

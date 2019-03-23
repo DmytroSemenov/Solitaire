@@ -37,6 +37,7 @@ class Game {
     this.baseLeft = new BaseStack({
       element: document.querySelector('[data-stack="base"]'),
       cards: cards,
+      isBase: true,
 
       onCardSelected: cards => {
         this._reSetTimeout();
@@ -63,6 +64,7 @@ class Game {
 
     this.baseRight = new BaseStackRight({
       element: document.querySelector('[data-stack="baseR"]'),
+      isBase: true,
       onCardSelected: this._onCardSelected
     });
   }
@@ -75,9 +77,9 @@ class Game {
       if (cards.length === 0 || !cards[0].isOpen) {
         return;
       }
-      if (stack.getElement().dataset.stack === 'baseR') {
-        cards = cards.slice(-1);
-      }
+      // if (stack.getElement().dataset.stack === 'baseR') {
+      //   cards = cards.slice(-1);
+      // }
       this.selectedCards = cards;
       this.selectedStack = stack;
       stack.select(cards);

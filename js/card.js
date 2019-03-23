@@ -12,7 +12,7 @@ class Card {
 
     this._render();
 
-    this._element.addEventListener('click', event => {
+    this._element.addEventListener('mousedown', event => {
       const myEvent = new CustomEvent('cardSelected', {
         detail: this,
         bubbles: true
@@ -55,13 +55,10 @@ class Card {
 
   _render() {
     const classes = ['card'];
-
     classes.push(this._isRed ? 'card__red' : 'card__black');
-
     if (!this.isOpen) {
       classes.push('card--closed');
     }
-
     this._element.innerHTML = `${this._sign} ${this._suit}`;
     this._element.className = classes.join(' ');
   }
