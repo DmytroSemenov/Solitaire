@@ -1,5 +1,5 @@
 class Stack {
-  constructor({ element, cards = [], onCardSelected, isBase = false }) {
+  constructor({ element, cards = [], onCardSelected, onCardDoubleclick, isBase = false }) {
     this._element = element;
     this._cards = cards;
     this._isBase = isBase;
@@ -17,6 +17,11 @@ class Stack {
         onCardSelected(selectedCards, this);
       });
     }
+
+    this._element.addEventListener('dblclick', event => {
+      const selectedCards = this._cards.slice(-1);
+      onCardDoubleclick(selectedCards, this);
+    });
 
     this._element.addEventListener('click', event => {
       if (this._cards.length > 0 || event.isCardClickHandled) {

@@ -3,6 +3,7 @@
 class Game {
   constructor() {
     this._onCardSelected = this._onCardSelected.bind(this);
+    this._onCardDoubleclick = this._onCardDoubleclick.bind(this);
     this._hasNextTurn = this._hasNextTurn.bind(this);
     this.start();
   }
@@ -23,7 +24,8 @@ class Game {
       this.workStacks[i] = new WorkingStack({
         element: document.querySelector(`[data-stack="num_${i}"]`),
         cards: cards.splice(0, i),
-        onCardSelected: this._onCardSelected
+        onCardSelected: this._onCardSelected,
+        onCardDoubleclick: this._onCardDoubleclick
       });
     }
 
@@ -65,7 +67,8 @@ class Game {
     this.baseRight = new BaseStackRight({
       element: document.querySelector('[data-stack="baseR"]'),
       isBase: true,
-      onCardSelected: this._onCardSelected
+      onCardSelected: this._onCardSelected,
+      onCardDoubleclick: this._onCardDoubleclick
     });
   }
 
@@ -77,9 +80,7 @@ class Game {
       if (cards.length === 0 || !cards[0].isOpen) {
         return;
       }
-      // if (stack.getElement().dataset.stack === 'baseR') {
-      //   cards = cards.slice(-1);
-      // }
+
       this.selectedCards = cards;
       this.selectedStack = stack;
       stack.select(cards);
@@ -88,14 +89,16 @@ class Game {
     }
     // 2nd click
     this.selectedStack.unselect();
-    if (this.selectedCards[0] === cards[0]) {
-      for (let i = 1; i <= SUITS.length; i++) {
-        if (this.finalStacks[i].canAccept(this.selectedCards)) {
-          stack = this.finalStacks[i];
-          break;
-        }
-      }
-    }
+    // double click
+    // if (this.selectedCards[0] === cards[0]) {
+    // if (doubleClick) {
+    //   for (let i = 1; i <= SUITS.length; i++) {
+    //     if (this.finalStacks[i].canAccept(this.selectedCards)) {
+    //       stack = this.finalStacks[i];
+    //       break;
+    //     }
+    //   }
+    // }
 
     if (!stack.canAccept(this.selectedCards)) {
       if (cards.length === 0 || !cards[0].isOpen) {
@@ -117,6 +120,25 @@ class Game {
     this.selectedCards = [];
     this.selectedStack = null;
     this._isWin();
+  }
+
+  _onCardDoubleclick(cards, stack) {
+    // this.selectedCards = cards;
+    // this.selectedStack = stack;
+    for (let i = 1; i <= SUITS.length; i++) {
+      if (this.finalStacks[i].canAccept(this.selectedCards)) {
+        stack = this.finalStacks[i];
+        this.selectedStack.unselect();
+        
+        this.selectedStack.removeCards(this.selectedCards);
+        stack.addCards(this.selectedCards);
+        this.selectedCards = [];
+        this.selectedStack = null;
+        this._isWin();
+
+        break;
+      }
+    }
   }
 
   _getCards() {
