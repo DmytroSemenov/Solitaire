@@ -80,7 +80,7 @@ class Game {
     // document.querySelector('.game').addEventListener('mousemove', event => {});
 
     document.querySelector('.game').addEventListener('mousedown', event => {
-      console.log(event.target.clientX);
+      console.log(event.clientX);
       document.querySelector('.game').onmousemove = function(eventMove) {
         // console.log(eventMove.target);
         this.xPos = eventMove.clientX;
