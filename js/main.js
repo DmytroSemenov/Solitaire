@@ -5,6 +5,7 @@ class Game {
     this._onCardSelected = this._onCardSelected.bind(this);
     this._onCardDoubleclick = this._onCardDoubleclick.bind(this);
     this._hasNextTurn = this._hasNextTurn.bind(this);
+
     this.start();
   }
 
@@ -17,6 +18,8 @@ class Game {
     this.cardsFromHint = [];
     this.cardToHint = [];
     this.timerId = null;
+
+    this.avatar = {};
 
     const cards = this._getCards();
 
@@ -32,7 +35,8 @@ class Game {
     for (let i = 1; i <= SUITS.length; i++) {
       this.finalStacks[i] = new FinalStack({
         element: document.querySelector(`[data-stack="final_${i}"]`),
-        onCardSelected: this._onCardSelected
+        onCardSelected: this._onCardSelected,
+        onCardDoubleclick: () => {}
       });
     }
 
@@ -70,6 +74,29 @@ class Game {
       onCardSelected: this._onCardSelected,
       onCardDoubleclick: this._onCardDoubleclick
     });
+
+    ///////////////////////////////////////////////
+
+    // document.querySelector('.game').addEventListener('mousemove', event => {});
+
+    document.querySelector('.game').addEventListener('mousedown', event => {
+      console.log(event.target.clientX);
+      document.querySelector('.game').onmousemove = function(eventMove) {
+        // console.log(eventMove.target);
+        this.xPos = eventMove.clientX;
+        this.yPos = eventMove.clientY;
+        // console.log(this.xPos);
+        document.querySelector('.avatar').style.left = this.xPos + 'px';
+        document.querySelector('.avatar').style.top = this.yPos + 'px';
+      };
+    });
+
+    // document.querySelector('.game').addEventListener('mouseup', event => {
+    //   this.xPos = event.clientX;
+    //   this.yPos = event.clientY;
+    // });
+
+    ////////////////////////////////////////////////////
   }
 
   _onCardSelected(cards, stack) {
@@ -90,16 +117,7 @@ class Game {
     // 2nd click
     this.selectedStack.unselect();
     // double click
-    // if (this.selectedCards[0] === cards[0]) {
-    // if (doubleClick) {
-    //   for (let i = 1; i <= SUITS.length; i++) {
-    //     if (this.finalStacks[i].canAccept(this.selectedCards)) {
-    //       stack = this.finalStacks[i];
-    //       break;
-    //     }
-    //   }
-    // }
-
+    // if (this.selectedCards[0] === cards[0])
     if (!stack.canAccept(this.selectedCards)) {
       if (cards.length === 0 || !cards[0].isOpen) {
         return;
@@ -123,13 +141,16 @@ class Game {
   }
 
   _onCardDoubleclick(cards, stack) {
-    // this.selectedCards = cards;
-    // this.selectedStack = stack;
+    if (cards.length === 0) {
+      return;
+    }
+    this.selectedCards = cards;
+    this.selectedStack = stack;
     for (let i = 1; i <= SUITS.length; i++) {
       if (this.finalStacks[i].canAccept(this.selectedCards)) {
         stack = this.finalStacks[i];
         this.selectedStack.unselect();
-        
+
         this.selectedStack.removeCards(this.selectedCards);
         stack.addCards(this.selectedCards);
         this.selectedCards = [];

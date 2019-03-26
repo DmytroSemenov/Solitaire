@@ -12,13 +12,13 @@ class Stack {
     });
 
     if (!isBase) {
-      this._element.addEventListener('mouseup', event => {
+      this._element.addEventListener('mouseup', () => {
         const selectedCards = this._cards.slice(-1);
         onCardSelected(selectedCards, this);
       });
     }
 
-    this._element.addEventListener('dblclick', event => {
+    this._element.addEventListener('dblclick', () => {
       const selectedCards = this._cards.slice(-1);
       onCardDoubleclick(selectedCards, this);
     });
