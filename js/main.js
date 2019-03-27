@@ -77,24 +77,32 @@ class Game {
 
     ///////////////////////////////////////////////
 
-    // document.querySelector('.game').addEventListener('mousemove', event => {});
-
     document.querySelector('.game').addEventListener('mousedown', event => {
-      console.log(event.clientX);
-      document.querySelector('.game').onmousemove = function(eventMove) {
-        // console.log(eventMove.target);
-        this.xPos = eventMove.clientX;
-        this.yPos = eventMove.clientY;
-        // console.log(this.xPos);
-        document.querySelector('.avatar').style.left = this.xPos + 'px';
-        document.querySelector('.avatar').style.top = this.yPos + 'px';
-      };
+      this.avatar.element = document.createElement('div');
+      document.querySelector('.game').append(this.avatar.element);
+      this.avatar.element.className = 'avatar';
+      // console.log(event.clientX);
+      // console.log(event.target.offsetLeft);
+      this.avatar.shiftLeft = event.clientX - event.target.offsetLeft;
+      this.avatar.shiftTop = event.clientY - event.target.offsetTop;
+      console.log(this.avatar.shiftLeft, this.avatar.shiftTop);
+      this.avatar.element.style.left =
+        event.clientX - this.avatar.shiftLeft + 'px';
+      this.avatar.element.style.top =
+        event.clientY - this.avatar.shiftTop + 'px';
     });
 
-    // document.querySelector('.game').addEventListener('mouseup', event => {
-    //   this.xPos = event.clientX;
-    //   this.yPos = event.clientY;
-    // });
+    document.querySelector('.game').addEventListener('mousemove', event => {
+      if (!this.avatar.element) return;
+      this.avatar.element.style.left =
+        event.clientX - this.avatar.shiftLeft + 'px';
+      this.avatar.element.style.top =
+        event.clientY - this.avatar.shiftTop + 'px';
+    });
+
+    document.querySelector('.game').addEventListener('mouseup', event => {
+      document.querySelector('.avatar').remove();
+    });
 
     ////////////////////////////////////////////////////
   }
