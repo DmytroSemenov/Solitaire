@@ -5,6 +5,7 @@ class Game {
     this._onCardSelected = this._onCardSelected.bind(this);
     this._onCardDoubleclick = this._onCardDoubleclick.bind(this);
     this._hasNextTurn = this._hasNextTurn.bind(this);
+    this._createAvatar = this._createAvatar.bind(this);
 
     this.start();
   }
@@ -77,23 +78,23 @@ class Game {
 
     ///////////////////////////////////////////////
 
-    document.querySelector('.game').addEventListener('mousedown', event => {
-      this.avatar.element = document.createElement('div');
-      document.querySelector('.game').append(this.avatar.element);
-      this.avatar.element.className = 'avatar';
-      // console.log(event.clientX);
-      // console.log(event.target.offsetLeft);
-      this.avatar.shiftLeft = event.clientX - event.target.offsetLeft;
-      this.avatar.shiftTop = event.clientY - event.target.offsetTop;
-      console.log(this.avatar.shiftLeft, this.avatar.shiftTop);
-      this.avatar.element.style.left =
-        event.clientX - this.avatar.shiftLeft + 'px';
-      this.avatar.element.style.top =
-        event.clientY - this.avatar.shiftTop + 'px';
-    });
+    // document.querySelector('.game').addEventListener('mousedown', event => {
+    //   // console.log(this);
+    //   this.avatar.element = document.createElement('div');
+    //   document.querySelector('.game').append(this.avatar.element);
+    //   this.avatar.element.className = 'avatar';
+    //   this.avatar.shiftLeft = event.clientX - event.target.offsetLeft;
+    //   this.avatar.shiftTop = event.clientY - event.target.offsetTop;
+    //   this.avatar.element.style.left =
+    //     event.clientX - this.avatar.shiftLeft + 'px';
+    //   this.avatar.element.style.top =
+    //     event.clientY - this.avatar.shiftTop + 'px';
+    // });
 
     document.querySelector('.game').addEventListener('mousemove', event => {
+      this.avatar.event = event;
       if (!this.avatar.element) return;
+
       this.avatar.element.style.left =
         event.clientX - this.avatar.shiftLeft + 'px';
       this.avatar.element.style.top =
@@ -101,7 +102,17 @@ class Game {
     });
 
     document.querySelector('.game').addEventListener('mouseup', event => {
-      document.querySelector('.avatar').remove();
+      if (document.querySelector('.avatar') !== null) {
+        document.querySelector('.avatar').remove();
+      }
+      if (event.isTrusted) {
+        const elem = document.elementFromPoint(event.clientX, event.clientY);
+        // console.log(elem);
+        const myMouseUp = new Event('mouseup', {
+          bubbles: true
+        });
+        elem.dispatchEvent(myMouseUp);
+      }
     });
 
     ////////////////////////////////////////////////////
@@ -119,11 +130,14 @@ class Game {
       this.selectedCards = cards;
       this.selectedStack = stack;
       stack.select(cards);
-
+      this._createAvatar(cards, stack);
       return;
     }
     // 2nd click
+    // console.log(event);
+
     this.selectedStack.unselect();
+    
     // double click
     // if (this.selectedCards[0] === cards[0])
     if (!stack.canAccept(this.selectedCards)) {
@@ -136,7 +150,7 @@ class Game {
       this.selectedCards = cards;
       this.selectedStack = stack;
       stack.select(cards);
-
+      this._createAvatar(cards, stack);
       return;
     }
 
@@ -168,6 +182,25 @@ class Game {
         break;
       }
     }
+  }
+
+  _createAvatar(cards, stack) {
+    this.avatar.cards = cards;
+    this.avatar.element = document.createElement('div');
+    this.avatar.element.className = 'avatar';
+    // for (const card of cards) {
+    //   card.getElement().style.marginLeft = '-2px';
+    //   this.avatar.element.appendChild(card.getElement());
+    // }
+    this.avatar.shiftLeft =
+      this.avatar.event.clientX - this.avatar.event.target.offsetLeft;
+    this.avatar.shiftTop =
+      this.avatar.event.clientY - this.avatar.event.target.offsetTop;
+    this.avatar.element.style.left =
+      this.avatar.event.clientX - this.avatar.shiftLeft + 'px';
+    this.avatar.element.style.top =
+      this.avatar.event.clientY - this.avatar.shiftTop + 'px';
+    document.querySelector('.game').append(this.avatar.element);
   }
 
   _getCards() {

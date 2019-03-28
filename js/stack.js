@@ -6,12 +6,12 @@ class Stack {
 
     this._element.addEventListener('cardSelected', event => {
       let index = this._cards.indexOf(event.detail);
-      if (isBase) index = -1;
+      if (this._isBase) index = -1;
       const selectedCards = this._cards.slice(index);
       onCardSelected(selectedCards, this);
     });
 
-    if (!isBase) {
+    if (!this._isBase) {
       this._element.addEventListener('mouseup', () => {
         const selectedCards = this._cards.slice(-1);
         onCardSelected(selectedCards, this);

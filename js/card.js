@@ -12,11 +12,12 @@ class Card {
 
     this._render();
 
+    const myEvent = new CustomEvent('cardSelected', {
+      detail: this,
+      bubbles: true
+    });
+
     this._element.addEventListener('mousedown', event => {
-      const myEvent = new CustomEvent('cardSelected', {
-        detail: this,
-        bubbles: true
-      });
       this._element.dispatchEvent(myEvent);
 
       event.isCardClickHandled = true;
