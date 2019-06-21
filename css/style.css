@@ -1,4 +1,5 @@
-html, body {
+html,
+body {
   width: 100%;
   padding-bottom: 30px;
 }
@@ -28,8 +29,11 @@ html, body {
 
 .card--closed {
   background-color: #030;
-  color: #030 !important;
- }
+  font-size: 0;
+  background-image: url(../img/cardback.png);
+  background-position: center;
+  background-size: 107px 160px;
+}
 
 .card--pressed {
   box-shadow: 0 0 10px rgba(255, 255, 0, 1);

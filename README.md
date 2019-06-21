@@ -1,6 +1,7 @@
 # Solitaire
-Дополнительный уровень: 
-- Карты перемещаются с помощью Drag & Drop 
+https://dmytrosemenov.github.io/Solitaire/
+https://github.com/DmytroSemenov/Solitaire/tree/gh-pages
+- только клик
 - Возможность поменять режим выдачи карт на 3 за раз 
-- Проверка комбинации на "решаемость" 
+config.js -> THREE_CARDS_DEAL
 - Подсветка хода при длительном простое
