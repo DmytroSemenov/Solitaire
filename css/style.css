@@ -1,1 +1,84 @@
+html,
+body {
+  width: 100%;
+  padding-bottom: 30px;
+}
 
+.game {
+  border: 1px solid #000;
+  width: 1000px;
+  margin: 0 auto;
+  padding: 10px;
+  min-height: 800px;
+  background: #1b4c25;
+}
+
+.card {
+  position: absolute;
+  width: 100px;
+  height: 150px;
+  background: #ddd;
+  font-size: 20px;
+  line-height: 25px;
+  border-radius: 5px;
+  padding: 5px;
+  border: 2px solid #cac6c6;
+  margin-left: -2px;
+  cursor: pointer;
+}
+
+.card--closed {
+  background-color: #030;
+  font-size: 0;
+  background-image: url(../img/cardback.png);
+  background-position: center;
+  background-size: 107px 160px;
+}
+
+.card--pressed {
+  box-shadow: 0 0 10px rgba(255, 255, 0, 1);
+}
+
+.placeholder {
+  float: left;
+  margin: 10px;
+  width: 110px;
+  height: 160px;
+  border-radius: 5px;
+  color: transparent;
+  border: 2px solid rgba(150, 150, 150, 0.7);
+  cursor: pointer;
+}
+
+.card__red {
+  color: red;
+}
+
+.card__black {
+  color: black;
+}
+
+.deck__main {
+  float: left;
+}
+
+.deck__final {
+  float: right;
+}
+
+.decks__workflow {
+  display: flex;
+  justify-content: space-between;
+  margin: 200px auto;
+}
+
+.winner {
+  display: none;
+  text-align: center;
+  width: 150px;
+  padding: 10px;
+  border: 2px solid #cac6c6;
+  border-radius: 5px;
+  background-color: red;
+  margin: 0 auto;
+}

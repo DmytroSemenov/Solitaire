@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Solitaire</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <script src="./js/config.js" defer></script>
+    <script src="./js/stack.js" defer></script>
+    <script src="./js/card.js" defer></script>
+    <script src="./js/main.js" defer></script>
+  </head>
+
+  <body>
+    <div id="gameTable" class="game" onselectstart="return false">
+      <!-- onmousedown="return false" -->
+      <div class="deck__main">
+        <div data-stack="base" class="placeholder"></div>
+        <div data-stack="baseR" class="placeholder"></div>
+      </div>
+      <div class="deck__final">
+        <div data-stack="final_1" class="placeholder"></div>
+        <div data-stack="final_2" class="placeholder"></div>
+        <div data-stack="final_3" class="placeholder"></div>
+        <div data-stack="final_4" class="placeholder"></div>
+      </div>
+      <div class="decks__workflow">
+        <div data-stack="num_1" class="placeholder"></div>
+        <div data-stack="num_2" class="placeholder"></div>
+        <div data-stack="num_3" class="placeholder"></div>
+        <div data-stack="num_4" class="placeholder"></div>
+        <div data-stack="num_5" class="placeholder"></div>
+        <div data-stack="num_6" class="placeholder"></div>
+        <div data-stack="num_7" class="placeholder"></div>
+      </div>
+      <div class="winner">YOU WIN!</div>
+    </div>
+  </body>
+</html>
